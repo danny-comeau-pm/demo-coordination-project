@@ -22,6 +22,8 @@ on:
 jobs:
   trigger-dotnet-workflow:
     runs-on: ubuntu-latest
+    outputs:
+      workflow_id: ${{ steps.trigger_workflow.outputs.workflow_id }}
     steps:
       - name: Trigger Deployment of .NET Project Workflow
         uses: octokit/request-action@v2.x
