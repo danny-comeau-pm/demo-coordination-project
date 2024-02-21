@@ -28,7 +28,7 @@ jobs:
   
   trigger-react-workflow:
     needs: trigger-dotnet-workflow
-    uses: danny-comeau-pm/demo-project/.github/workflows/deploy-version.yml@main
+    uses: danny-comeau-pm/demo-project/.github/workflows/deployment-solution-2.yml@main
     with:
       environment: ${{ inputs.environment }}
       versionTag: ${{ inputs.reactVersionTag }}
