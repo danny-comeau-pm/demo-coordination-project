@@ -33,7 +33,7 @@ jobs:
           # ref: main
           inputs: '{"environment":"${{ github.event.inputs.environment }}","versionTag":"${{ github.event.inputs.dotNetVersionTag }}"}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.deployment_token }}
   
   trigger-react-workflow:
     runs-on: ubuntu-latest
@@ -42,10 +42,10 @@ jobs:
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-          owner: your-react-repo-owner
-          repo: your-react-repo-name
-          workflow_id: your-react-workflow-file.yml
+          owner: danny-comeau-pm
+          repo: demo-project
+          workflow_id: deploy-version.yml
           # ref: main
           inputs: '{"environment":"${{ github.event.inputs.environment }}","versionTag":"${{ github.event.inputs.reactVersionTag }}"}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.deployment_token }}
