@@ -13,13 +13,10 @@ on:
           - stage
           - prod
       reactVersionTag:
-        description: 'Version tag to deploy'
+        description: 'React version tag to deploy'
         required: true
       dotNetVersionTag:
-        description: 'Version tag to deploy'
-        required: true
-      branch:
-        description: 'Branch to use for React project'
+        description: '.NET version tag to deploy'
         required: true
 
 jobs:
