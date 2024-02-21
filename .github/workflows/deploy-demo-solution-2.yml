@@ -21,7 +21,7 @@ on:
 
 jobs:
   trigger-dotnet-workflow:
-    uses: danny-comeau-pm/demo-dotNet-project/.github/workflows/deploy-version.yml@main
+    uses: danny-comeau-pm/demo-dotNet-project/.github/workflows/deploy-demo-solution-2.yml@main
     with:
       environment: ${{ inputs.environment }}
       versionTag: ${{ inputs.dotNetVersionTag }}
