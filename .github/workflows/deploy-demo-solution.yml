@@ -26,7 +26,7 @@ jobs:
       - name: Trigger Deployment of .NET Project Workflow
         uses: octokit/request-action@v2.x
         with:
-          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          route: POST /repos/danny-comeau-pm/demo-dotNet-project/actions/workflows/deploy-version.yml/dispatches
           owner: danny-comeau-pm
           repo: demo-dotNet-project
           workflow_id: deploy-version.yml
@@ -41,7 +41,7 @@ jobs:
       - name: Trigger Deployment of React Project Workflow
         uses: octokit/request-action@v2.x
         with:
-          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          route: POST /repos/danny-comeau-pm/demo-project/actions/workflows/deploy-version.yml/dispatches
           owner: danny-comeau-pm
           repo: demo-project
           workflow_id: deploy-version.yml
