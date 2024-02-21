@@ -1,0 +1,54 @@
+name: Deploy Demo Solution
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+          description: 'Deploy to Environment'
+          required: true
+          default: 'dev'
+          type: choice
+          options:
+          - dev
+          - test
+          - stage
+          - prod
+      reactVersionTag:
+        description: 'Version tag to deploy'
+        required: true
+      dotNetVersionTag:
+        description: 'Version tag to deploy'
+        required: true
+      branch:
+        description: 'Branch to use for React project'
+        required: true
+
+jobs:
+  trigger-dotnet-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment of .NET Project Workflow
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: danny-comeau-pm
+          repo: demo-dotNet-project
+          workflow_id: deploy-version.yml
+          # ref: main
+          inputs: '{"environment":"${{ github.event.inputs.environment }}","versionTag":"${{ github.event.inputs.dotNetVersionTag }}"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  trigger-react-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment of React Project Workflow
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: your-react-repo-owner
+          repo: your-react-repo-name
+          workflow_id: your-react-workflow-file.yml
+          # ref: main
+          inputs: '{"environment":"${{ github.event.inputs.environment }}","versionTag":"${{ github.event.inputs.reactVersionTag }}"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
