@@ -37,7 +37,6 @@ jobs:
   succesful-dotnet-workflow:
     needs: trigger-dotnet-workflow
     runs-on: ubuntu-latest
-    if: ${{ needs.trigger-dotnet-workflow.outputs.workflow_id }}
     steps:
      - name: Wait for .NET Workflow to Complete
        id: wait_for_dotnet
