@@ -22,6 +22,8 @@ on:
 jobs:
   trigger-dotnet-workflow:
     runs-on: ubuntu-latest
+    outputs:
+      workflow_run_id: ${{ steps.trigger_workflow.outputs.workflow_run_id }}
     steps:
       - name: Trigger Deployment of .NET Project Workflow
         uses: octokit/request-action@v2.x
@@ -35,13 +37,14 @@ jobs:
   succesful-dotnet-workflow:
     needs: trigger-dotnet-workflow
     runs-on: ubuntu-latest
+    if: ${{ needs.trigger-dotnet-workflow.outputs.workflow_run_id }}
     steps:
      - name: Wait for .NET Workflow to Complete
        id: wait_for_dotnet
        run: |
           #!/bin/bash
           # The workflow_id is assumed to be set by the previous step when the .NET workflow was triggered
-          workflow_id=deploy-version.yml
+          workflow_id=${{ needs.trigger-dotnet-workflow.outputs.workflow_run_id }}
           echo "Waiting for .NET workflow run ID $workflow_id to complete..."
           
           # Define the GitHub API base URL
