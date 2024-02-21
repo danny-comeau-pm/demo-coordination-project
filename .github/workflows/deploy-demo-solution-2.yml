@@ -21,13 +21,13 @@ on:
 
 jobs:
   trigger-dotnet-workflow:
-    uses: danny-comeau-pm/demo-dotNet-project@main/.github/workflows/deploy-version.yml
+    uses: danny-comeau-pm/demo-dotNet-project/.github/workflows/deploy-version.yml@main
     with:
       environment: ${{ inputs.environment }}
       versionTag: ${{ inputs.dotNetVersionTag }}
   
   trigger-react-workflow:
-    uses: danny-comeau-pm/demo-project@main/.github/workflows/deploy-version.yml
+    uses: danny-comeau-pm/demo-project/.github/workflows/deploy-version.yml@main
     with:
       environment: ${{ inputs.environment }}
       versionTag: ${{ inputs.reactVersionTag }}
