@@ -1,0 +1,33 @@
+name: Deploy Demo Solution 2
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+          description: 'Deploy to Environment'
+          required: true
+          default: 'dev'
+          type: choice
+          options:
+          - dev
+          - test
+          - stage
+          - prod
+      reactVersionTag:
+        description: 'React version tag to deploy'
+        required: true
+      dotNetVersionTag:
+        description: '.NET version tag to deploy'
+        required: true
+
+jobs:
+  trigger-dotnet-workflow:
+    uses: danny-comeau-pm/demo-dotNet-project@main/.github/workflows/deploy-version.yml
+    with:
+      environment: ${{ inputs.environment }}
+      versionTag: ${{ inputs.dotNetVersionTag }}
+  
+  trigger-react-workflow:
+    uses: danny-comeau-pm/demo-project@main/.github/workflows/deploy-version.yml
+    with:
+      environment: ${{ inputs.environment }}
+      versionTag: ${{ inputs.reactVersionTag }}
