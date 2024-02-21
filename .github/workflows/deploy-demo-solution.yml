@@ -33,72 +33,9 @@ jobs:
           inputs: '{"environment":"${{ github.event.inputs.environment }}","versionTag":"${{ github.event.inputs.dotNetVersionTag }}"}'
         env:
           GITHUB_TOKEN: ${{ secrets.deployment_token }}
-
-  succesful-dotnet-workflow:
-    needs: trigger-dotnet-workflow
-    runs-on: ubuntu-latest
-    if: ${{ needs.trigger-dotnet-workflow.outputs.workflow_run_id }}
-    steps:
-     - name: Wait for .NET Workflow to Complete
-       id: wait_for_dotnet
-       run: |
-          #!/bin/bash
-          # The workflow_id is assumed to be set by the previous step when the .NET workflow was triggered
-          workflow_id=${{ needs.trigger-dotnet-workflow.outputs.workflow_run_id }}
-          echo "Waiting for .NET workflow run ID $workflow_id to complete..."
-          
-          # Define the GitHub API base URL
-          GITHUB_API_URL="https://api.github.com"
-          
-          # The time interval (in seconds) between each poll
-          interval=10
-          
-          # The maximum number of attempts before giving up
-          max_attempts=30
-          
-          attempt_counter=0
-          workflow_completed=false
-          
-          while [ $attempt_counter -lt $max_attempts ]; do
-            # Get the status of the workflow run
-            response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-                            -H "Accept: application/vnd.github.v3+json" \
-                            "$GITHUB_API_URL/repos/danny-comeau-pm/demo-dotNet-project/actions/runs/$workflow_id")
-                            
-            # Extract the status and conclusion of the workflow run
-            status=$(echo $response | jq -r '.status')
-            conclusion=$(echo $response | jq -r '.conclusion')
-            
-            echo "Current status: $status"
-            
-            if [ "$status" == "completed" ]; then
-              echo "Workflow run completed with conclusion: $conclusion"
-              workflow_completed=true
-              break
-            fi
-            
-            # Wait for the specified interval before polling again
-            sleep $interval
-            attempt_counter=$((attempt_counter+1))
-            done
-          
-            if [ "$workflow_completed" = false ]; then
-              echo "Workflow did not complete within the expected time frame."
-              exit 1
-            fi
-          
-            if [ "$conclusion" != "success" ]; then
-              echo "Workflow completed but was not successful."
-              exit 1
-            fi
-            
-            echo "Workflow completed successfully."
-          env:
-            GITHUB_TOKEN: ${{ secrets.deployment_token }}
-
   
   trigger-react-workflow:
-    needs: succesful-dotnet-workflow
+    needs: trigger-dotnet-workflow
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Deployment of React Project Workflow
